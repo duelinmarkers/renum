@@ -45,4 +45,8 @@ describe "enum" do
     Status::NOT_STARTED.to_s.should == "Status::NOT_STARTED"
   end
   
+  it "makes values comparable" do
+    Color::RED.should < Color::GREEN
+  end
+  
 end

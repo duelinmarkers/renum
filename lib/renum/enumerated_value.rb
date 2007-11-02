@@ -13,6 +13,7 @@ module Renum
       
     end
     
+    include Comparable
     attr_reader :name
     
     def initialize name
@@ -26,6 +27,10 @@ module Renum
     
     def index
       self.class.values.index self
+    end
+    
+    def <=> other
+      index <=> other.index
     end
     
   end
