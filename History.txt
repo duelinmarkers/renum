@@ -1,4 +1,10 @@
+== 0.0.3 2007-11-02
+
+* Support nesting enums inside other modules.
+* Add Comparable
+
 == 0.0.1 2007-11-01
 
 * 1 major enhancement:
   * Initial release
+
