@@ -5,15 +5,12 @@ h1. &#x2192; 'renum'
 
 h2. What
 
+Renum provides a readable but terse enum facility for Ruby.
+
 
 h2. Installing
 
 <pre syntax="ruby">sudo gem install renum</pre>
-
-
-h2. The basics
-
-Renum is a an enum for Ruby.
 
 
 h2. Demonstration of usage
@@ -22,7 +19,7 @@ Renum allows you to do something like this:
 
 <pre syntax="ruby">enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]</pre>
 
-or this:
+and this:
 
 <pre syntax="ruby">enum :Color, [ :RED, :GREEN, :BLUE ] do
   def abbr
@@ -30,6 +27,45 @@ or this:
   end
 end</pre>
 
+Giving you something that satisfies this spec:
+
+<pre syntax="ruby">describe "enum" do
+  
+  it "creates a class for the value type" do
+    Status.class.should == Class
+  end
+  
+  it "makes each value an instance of the value type" do
+    Status::NOT_STARTED.class.should == Status
+  end
+  
+  it "exposes array of values" do
+    Status.values.should == [Status::NOT_STARTED, Status::IN_PROGRESS, Status::COMPLETE]
+  end
+  
+  it "enumerates over values" do
+    Status.map {|s| s.name}.should == %w[NOT_STARTED IN_PROGRESS COMPLETE]
+  end
+  
+  it "indexes values" do
+    Status[2].should == Status::COMPLETE
+    Color[0].should == Color::RED
+  end
+  
+  it "provides index lookup on values" do
+    Status::IN_PROGRESS.index.should == 1
+    Color::GREEN.index.should == 1
+  end
+  
+  it "allows an associated block to define instance methods" do
+    Color::RED.abbr.should == "R"
+  end
+  
+  it "provides a reasonable to_s for values" do
+    Status::NOT_STARTED.to_s.should == "Status::NOT_STARTED"
+  end
+  
+end</pre>
 
 h2. License
 
@@ -37,5 +73,5 @@ This code is free to use under the terms of the MIT license.
 
 h2. Contact
 
-Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or contact me via my blog.
+Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or [contact me via my blog]:"http://elhumidor.blogspot.com/".
 

@@ -1,11 +1,133 @@
-<html>
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>renum</title>
-		
-	</head>
-	<body id="body">
-		<p>This page has not yet been created for RubyGem <code>renum</code></p>
-		<p>To the developer: To generate it, update website/index.txt and run the rake task <code>website</code> to generate this <code>index.html</code> file.</p>
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>
+      renum
+  </title>
+  <script src="javascripts/rounded_corners_lite.inc.js" type="text/javascript"></script>
+<style>
+
+</style>
+  <script type="text/javascript">
+    window.onload = function() {
+      settings = {
+          tl: { radius: 10 },
+          tr: { radius: 10 },
+          bl: { radius: 10 },
+          br: { radius: 10 },
+          antiAlias: true,
+          autoPad: true,
+          validTags: ["div"]
+      }
+      var versionBox = new curvyCorners(settings, document.getElementById("version"));
+      versionBox.applyCornersToAll();
+    }
+  </script>
+</head>
+<body>
+<div id="main">
+
+    <h1>renum</h1>
+    <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/renum"; return false'>
+      <p>Get Version</p>
+      <a href="http://rubyforge.org/projects/renum" class="numbers">0.0.1</a>
+    </div>
+    <h1>&#x2192; &#8216;renum&#8217;</h1>
+
+
+	<h2>What</h2>
+
+
+	<p>Renum provides a readable but terse enum facility for Ruby.</p>
+
+
+	<h2>Installing</h2>
+
+
+	<p><pre class='syntax'><span class="ident">sudo</span> <span class="ident">gem</span> <span class="ident">install</span> <span class="ident">renum</span></pre></p>
+
+
+	<h2>Demonstration of usage</h2>
+
+
+	<p>Renum allows you to do something like this:</p>
+
+
+	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Status</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:NOT_STARTED</span><span class="punct">,</span> <span class="symbol">:IN_PROGRESS</span><span class="punct">,</span> <span class="symbol">:COMPLETE</span> <span class="punct">]</span></pre></p>
+
+
+	<p>and this:</p>
+
+
+	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Color</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:RED</span><span class="punct">,</span> <span class="symbol">:GREEN</span><span class="punct">,</span> <span class="symbol">:BLUE</span> <span class="punct">]</span> <span class="keyword">do</span>
+  <span class="keyword">def </span><span class="method">abbr</span>
+    <span class="ident">name</span><span class="punct">[</span><span class="number">0</span><span class="punct">..</span><span class="number">0</span><span class="punct">]</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></pre></p>
+
+
+	<p>Giving you something that satisfies this spec:</p>
+
+
+	<p><pre class='syntax'><span class="ident">describe</span> <span class="punct">&quot;</span><span class="string">enum</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">creates a class for the value type</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">.</span><span class="ident">class</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Class</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">makes each value an instance of the value type</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">.</span><span class="ident">class</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Status</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">exposes array of values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">.</span><span class="ident">values</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">[</span><span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">,</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">IN_PROGRESS</span><span class="punct">,</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">COMPLETE</span><span class="punct">]</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">enumerates over values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">.</span><span class="ident">map</span> <span class="punct">{|</span><span class="ident">s</span><span class="punct">|</span> <span class="ident">s</span><span class="punct">.</span><span class="ident">name</span><span class="punct">}.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">%w[</span><span class="string">NOT_STARTED IN_PROGRESS COMPLETE</span><span class="punct">]</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">indexes values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">[</span><span class="number">2</span><span class="punct">].</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">COMPLETE</span>
+    <span class="constant">Color</span><span class="punct">[</span><span class="number">0</span><span class="punct">].</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides index lookup on values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">::</span><span class="constant">IN_PROGRESS</span><span class="punct">.</span><span class="ident">index</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="number">1</span>
+    <span class="constant">Color</span><span class="punct">::</span><span class="constant">GREEN</span><span class="punct">.</span><span class="ident">index</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="number">1</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows an associated block to define instance methods</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span><span class="punct">.</span><span class="ident">abbr</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">&quot;</span><span class="string">R</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides a reasonable to_s for values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">&quot;</span><span class="string">Status::NOT_STARTED</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
+  
+<span class="keyword">end</span></pre></p>
+
+
+	<h2>License</h2>
+
+
+	<p>This code is free to use under the terms of the <span class="caps">MIT</span> license.</p>
+
+
+	<h2>Contact</h2>
+
+
+	<p>Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or [contact me via my blog]:&#8221;http://elhumidor.blogspot.com/&#8221;.</p>
+    <p class="coda">
+      <a href="http://elhumidor.blogspot.com/">John D. Hume</a>, 2nd November 2007<br>
+      Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
+    </p>
+</div>
+
+<!-- insert site tracking codes here, like Google Urchin -->
+
+</body>
 </html>
