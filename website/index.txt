@@ -1,0 +1,41 @@
+h1. renum
+
+h1. &#x2192; 'renum'
+
+
+h2. What
+
+
+h2. Installing
+
+<pre syntax="ruby">sudo gem install renum</pre>
+
+
+h2. The basics
+
+Renum is a an enum for Ruby.
+
+
+h2. Demonstration of usage
+
+Renum allows you to do something like this:
+
+<pre syntax="ruby">enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]</pre>
+
+or this:
+
+<pre syntax="ruby">enum :Color, [ :RED, :GREEN, :BLUE ] do
+  def abbr
+    name[0..0]
+  end
+end</pre>
+
+
+h2. License
+
+This code is free to use under the terms of the MIT license. 
+
+h2. Contact
+
+Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or contact me via my blog.
+
