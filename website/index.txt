@@ -15,16 +15,18 @@ h2. Installing
 
 h2. Demonstration of usage
 
-Renum allows you to do something like this:
+Renum allows you to do things like this:
 
-<pre syntax="ruby">enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]</pre>
+<pre syntax="ruby">enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
-and this:
-
-<pre syntax="ruby">enum :Color, [ :RED, :GREEN, :BLUE ] do
+enum :Color, [ :RED, :GREEN, :BLUE ] do
   def abbr
     name[0..0]
   end
+end
+
+module MyNamespace
+  enum :FooValue, [ :Bar, :Baz, :Bat ]
 end</pre>
 
 Giving you something that satisfies this spec:
@@ -63,6 +65,14 @@ Giving you something that satisfies this spec:
   
   it "provides a reasonable to_s for values" do
     Status::NOT_STARTED.to_s.should == "Status::NOT_STARTED"
+  end
+  
+  it "makes values comparable" do
+    Color::RED.should < Color::GREEN
+  end
+  
+  it "allows enums to be nested in other modules or classes" do
+    MyNamespace::FooValue::Bar.class.should == MyNamespace::FooValue
   end
   
 end</pre>

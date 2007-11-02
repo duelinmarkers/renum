@@ -33,7 +33,7 @@
     <h1>renum</h1>
     <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/renum"; return false'>
       <p>Get Version</p>
-      <a href="http://rubyforge.org/projects/renum" class="numbers">0.0.1</a>
+      <a href="http://rubyforge.org/projects/renum" class="numbers">0.0.2</a>
     </div>
     <h1>&#x2192; &#8216;renum&#8217;</h1>
 
@@ -53,19 +53,19 @@
 	<h2>Demonstration of usage</h2>
 
 
-	<p>Renum allows you to do something like this:</p>
+	<p>Renum allows you to do things like this:</p>
 
 
-	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Status</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:NOT_STARTED</span><span class="punct">,</span> <span class="symbol">:IN_PROGRESS</span><span class="punct">,</span> <span class="symbol">:COMPLETE</span> <span class="punct">]</span></pre></p>
+	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Status</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:NOT_STARTED</span><span class="punct">,</span> <span class="symbol">:IN_PROGRESS</span><span class="punct">,</span> <span class="symbol">:COMPLETE</span> <span class="punct">]</span>
 
-
-	<p>and this:</p>
-
-
-	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Color</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:RED</span><span class="punct">,</span> <span class="symbol">:GREEN</span><span class="punct">,</span> <span class="symbol">:BLUE</span> <span class="punct">]</span> <span class="keyword">do</span>
+<span class="ident">enum</span> <span class="symbol">:Color</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:RED</span><span class="punct">,</span> <span class="symbol">:GREEN</span><span class="punct">,</span> <span class="symbol">:BLUE</span> <span class="punct">]</span> <span class="keyword">do</span>
   <span class="keyword">def </span><span class="method">abbr</span>
     <span class="ident">name</span><span class="punct">[</span><span class="number">0</span><span class="punct">..</span><span class="number">0</span><span class="punct">]</span>
   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">module </span><span class="module">MyNamespace</span>
+  <span class="ident">enum</span> <span class="symbol">:FooValue</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:Bar</span><span class="punct">,</span> <span class="symbol">:Baz</span><span class="punct">,</span> <span class="symbol">:Bat</span> <span class="punct">]</span>
 <span class="keyword">end</span></pre></p>
 
 
@@ -106,6 +106,14 @@
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides a reasonable to_s for values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
     <span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">.</span><span class="ident">to_s</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">&quot;</span><span class="string">Status::NOT_STARTED</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">makes values comparable</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">&lt;</span> <span class="constant">Color</span><span class="punct">::</span><span class="constant">GREEN</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows enums to be nested in other modules or classes</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">MyNamespace</span><span class="punct">::</span><span class="constant">FooValue</span><span class="punct">::</span><span class="constant">Bar</span><span class="punct">.</span><span class="ident">class</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">MyNamespace</span><span class="punct">::</span><span class="constant">FooValue</span>
   <span class="keyword">end</span>
   
 <span class="keyword">end</span></pre></p>
