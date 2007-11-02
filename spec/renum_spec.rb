@@ -9,6 +9,10 @@ enum :Color, [ :RED, :GREEN, :BLUE ] do
   end
 end
 
+module MyNamespace
+  enum :FooValue, [ :Bar, :Baz, :Bat ]
+end
+
 describe "enum" do
   
   it "creates a class for the value type" do
@@ -47,6 +51,10 @@ describe "enum" do
   
   it "makes values comparable" do
     Color::RED.should < Color::GREEN
+  end
+  
+  it "allows enums to be nested in other modules or classes" do
+    MyNamespace::FooValue::Bar.class.should == MyNamespace::FooValue
   end
   
 end
