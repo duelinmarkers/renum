@@ -7,6 +7,7 @@ config/hoe.rb
 config/requirements.rb
 lib/renum.rb
 lib/renum/enumerated_value.rb
+lib/renum/enumerated_value_type_factory.rb
 lib/renum/version.rb
 log/debug.log
 script/destroy
