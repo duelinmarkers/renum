@@ -19,3 +19,8 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "spec/spec.opts"]
   t.spec_files = FileList['spec/*_spec.rb']
 end
+
+task :spec_gem do
+  ENV['USE_GEM'] = 'y'
+  Rake::Task[:spec].invoke
+end

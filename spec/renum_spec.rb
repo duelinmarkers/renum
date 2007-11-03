@@ -1,5 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper.rb')
-require File.expand_path(File.dirname(__FILE__) + '/../lib/renum')
+if ENV['USE_GEM']
+  require 'renum'
+else
+  require File.expand_path(File.dirname(__FILE__) + '/../lib/renum')
+end
 
 enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
