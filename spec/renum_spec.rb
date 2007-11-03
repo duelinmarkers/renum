@@ -16,11 +16,11 @@ end
 describe "enum" do
   
   it "creates a class for the value type" do
-    Status.class.should == Class
+    Status.should be_an_instance_of(Class)
   end
   
   it "makes each value an instance of the value type" do
-    Status::NOT_STARTED.class.should == Status
+    Status::NOT_STARTED.should be_an_instance_of(Status)
   end
   
   it "exposes array of values" do
