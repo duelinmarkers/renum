@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Renum
   class EnumeratedValue
     

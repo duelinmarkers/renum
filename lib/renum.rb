@@ -9,6 +9,7 @@ module Renum
 end
 
 extend Renum
+
 Module.module_eval do
   include Renum
 end
