@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper.rb')
 if ENV['USE_GEM']
+  require 'rubygems'
   require 'renum'
 else
   require File.expand_path(File.dirname(__FILE__) + '/../lib/renum')
