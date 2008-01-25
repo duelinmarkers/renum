@@ -1,10 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper.rb')
-if ENV['USE_GEM']
-  require 'rubygems'
-  require 'renum'
-else
-  require File.expand_path(File.dirname(__FILE__) + '/../lib/renum')
-end
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
@@ -23,17 +17,17 @@ enum :Size do
   Medium("Sort of in the middle")
   Large("Quite big")
 
+  attr_reader :description
+
   def init description
     @description = description
   end
-
-  attr_reader :description
 end
 
 enum :HairColor do
-  Blonde()
-  Brunette()
-  Red()
+  BLONDE()
+  BRUNETTE()
+  RED()
 end
 
 describe "basic enum" do
@@ -98,7 +92,7 @@ describe "enum with no values array and values declared in the block" do
     lambda { Size.ExtraLarge() }.should raise_error(NoMethodError)
   end
   
-  it "supprts there being no extra data and no init() method defined" do
-    HairColor::Blonde.name.should == "Blonde"
+  it "supprts there being no extra data and no init() method defined, if you don't need them" do
+    HairColor::BLONDE.name.should == "BLONDE"
   end
 end
