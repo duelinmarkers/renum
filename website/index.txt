@@ -1,27 +1,26 @@
 h1. renum
 
-h1. &#x2192; 'renum'
-
-
-h2. What
-
-Renum provides a readable but terse enum facility for Ruby.
-
+Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby's flexibility means there's no such thing as type-safety.
 
 h2. Installing
 
 <pre syntax="ruby">sudo gem install renum</pre>
 
-
 h2. Demonstration of usage
 
 Renum allows you to do things like this:
 
-<pre syntax="ruby">enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
+<pre syntax="ruby">enum :Status, %w( NOT_STARTED IN_PROGRESS COMPLETE )
 
-enum :Color, [ :RED, :GREEN, :BLUE ] do
-  def abbr
-    name[0..0]
+enum :Size do
+  Small("Really really tiny")
+  Medium("Sort of in the middle")
+  Large("Quite big")
+
+  attr_reader :description
+
+  def init description
+    @description = description
   end
 end
 
@@ -29,7 +28,7 @@ module MyNamespace
   enum :FooValue, [ :Bar, :Baz, :Bat ]
 end</pre>
 
-Giving you something that satisfies this spec:
+Giving you something that satisfies this spec, plus a bit more:
 
 <pre syntax="ruby">describe "enum" do
   
@@ -44,6 +43,10 @@ Giving you something that satisfies this spec:
   it "exposes array of values" do
     Status.values.should == [Status::NOT_STARTED, Status::IN_PROGRESS, Status::COMPLETE]
   end
+
+  it "provides an alternative means of declaring values where extra information can be provided for initialization" do
+    Size::Small.description.should == "Really really tiny"
+  end
   
   it "enumerates over values" do
     Status.map {|s| s.name}.should == %w[NOT_STARTED IN_PROGRESS COMPLETE]
@@ -51,16 +54,10 @@ Giving you something that satisfies this spec:
   
   it "indexes values" do
     Status[2].should == Status::COMPLETE
-    Color[0].should == Color::RED
   end
   
   it "provides index lookup on values" do
     Status::IN_PROGRESS.index.should == 1
-    Color::GREEN.index.should == 1
-  end
-  
-  it "allows an associated block to define instance methods" do
-    Color::RED.abbr.should == "R"
   end
   
   it "provides a reasonable to_s for values" do
@@ -68,7 +65,7 @@ Giving you something that satisfies this spec:
   end
   
   it "makes values comparable" do
-    Color::RED.should < Color::GREEN
+    Status::NOT_STARTED.should < Status::COMPLETE
   end
   
   it "allows enums to be nested in other modules or classes" do

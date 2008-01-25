@@ -33,15 +33,9 @@
     <h1>renum</h1>
     <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/renum"; return false'>
       <p>Get Version</p>
-      <a href="http://rubyforge.org/projects/renum" class="numbers">0.1.0</a>
+      <a href="http://rubyforge.org/projects/renum" class="numbers">1.0.0</a>
     </div>
-    <h1>&#x2192; &#8216;renum&#8217;</h1>
-
-
-	<h2>What</h2>
-
-
-	<p>Renum provides a readable but terse enum facility for Ruby.</p>
+    <p>Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby&#8217;s flexibility means there&#8217;s no such thing as type-safety.</p>
 
 
 	<h2>Installing</h2>
@@ -56,11 +50,17 @@
 	<p>Renum allows you to do things like this:</p>
 
 
-	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Status</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:NOT_STARTED</span><span class="punct">,</span> <span class="symbol">:IN_PROGRESS</span><span class="punct">,</span> <span class="symbol">:COMPLETE</span> <span class="punct">]</span>
+	<p><pre class='syntax'><span class="ident">enum</span> <span class="symbol">:Status</span><span class="punct">,</span> <span class="punct">%w(</span><span class="string"> NOT_STARTED IN_PROGRESS COMPLETE </span><span class="punct">)</span>
 
-<span class="ident">enum</span> <span class="symbol">:Color</span><span class="punct">,</span> <span class="punct">[</span> <span class="symbol">:RED</span><span class="punct">,</span> <span class="symbol">:GREEN</span><span class="punct">,</span> <span class="symbol">:BLUE</span> <span class="punct">]</span> <span class="keyword">do</span>
-  <span class="keyword">def </span><span class="method">abbr</span>
-    <span class="ident">name</span><span class="punct">[</span><span class="number">0</span><span class="punct">..</span><span class="number">0</span><span class="punct">]</span>
+<span class="ident">enum</span> <span class="symbol">:Size</span> <span class="keyword">do</span>
+  <span class="constant">Small</span><span class="punct">(&quot;</span><span class="string">Really really tiny</span><span class="punct">&quot;)</span>
+  <span class="constant">Medium</span><span class="punct">(&quot;</span><span class="string">Sort of in the middle</span><span class="punct">&quot;)</span>
+  <span class="constant">Large</span><span class="punct">(&quot;</span><span class="string">Quite big</span><span class="punct">&quot;)</span>
+
+  <span class="ident">attr_reader</span> <span class="symbol">:description</span>
+
+  <span class="keyword">def </span><span class="method">init</span> <span class="ident">description</span>
+    <span class="attribute">@description</span> <span class="punct">=</span> <span class="ident">description</span>
   <span class="keyword">end</span>
 <span class="keyword">end</span>
 
@@ -69,7 +69,7 @@
 <span class="keyword">end</span></pre></p>
 
 
-	<p>Giving you something that satisfies this spec:</p>
+	<p>Giving you something that satisfies this spec, plus a bit more:</p>
 
 
 	<p><pre class='syntax'><span class="ident">describe</span> <span class="punct">&quot;</span><span class="string">enum</span><span class="punct">&quot;</span> <span class="keyword">do</span>
@@ -85,6 +85,10 @@
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">exposes array of values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
     <span class="constant">Status</span><span class="punct">.</span><span class="ident">values</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">[</span><span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">,</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">IN_PROGRESS</span><span class="punct">,</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">COMPLETE</span><span class="punct">]</span>
   <span class="keyword">end</span>
+
+  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides an alternative means of declaring values where extra information can be provided for initialization</span><span class="punct">&quot;</span> <span class="keyword">do</span>
+    <span class="constant">Size</span><span class="punct">::</span><span class="constant">Small</span><span class="punct">.</span><span class="ident">description</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">&quot;</span><span class="string">Really really tiny</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">enumerates over values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
     <span class="constant">Status</span><span class="punct">.</span><span class="ident">map</span> <span class="punct">{|</span><span class="ident">s</span><span class="punct">|</span> <span class="ident">s</span><span class="punct">.</span><span class="ident">name</span><span class="punct">}.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">%w[</span><span class="string">NOT_STARTED IN_PROGRESS COMPLETE</span><span class="punct">]</span>
@@ -92,16 +96,10 @@
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">indexes values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
     <span class="constant">Status</span><span class="punct">[</span><span class="number">2</span><span class="punct">].</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">COMPLETE</span>
-    <span class="constant">Color</span><span class="punct">[</span><span class="number">0</span><span class="punct">].</span><span class="ident">should</span> <span class="punct">==</span> <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span>
   <span class="keyword">end</span>
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides index lookup on values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
     <span class="constant">Status</span><span class="punct">::</span><span class="constant">IN_PROGRESS</span><span class="punct">.</span><span class="ident">index</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="number">1</span>
-    <span class="constant">Color</span><span class="punct">::</span><span class="constant">GREEN</span><span class="punct">.</span><span class="ident">index</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="number">1</span>
-  <span class="keyword">end</span>
-  
-  <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows an associated block to define instance methods</span><span class="punct">&quot;</span> <span class="keyword">do</span>
-    <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span><span class="punct">.</span><span class="ident">abbr</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">&quot;</span><span class="string">R</span><span class="punct">&quot;</span>
   <span class="keyword">end</span>
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">provides a reasonable to_s for values</span><span class="punct">&quot;</span> <span class="keyword">do</span>
@@ -109,7 +107,7 @@
   <span class="keyword">end</span>
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">makes values comparable</span><span class="punct">&quot;</span> <span class="keyword">do</span>
-    <span class="constant">Color</span><span class="punct">::</span><span class="constant">RED</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">&lt;</span> <span class="constant">Color</span><span class="punct">::</span><span class="constant">GREEN</span>
+    <span class="constant">Status</span><span class="punct">::</span><span class="constant">NOT_STARTED</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">&lt;</span> <span class="constant">Status</span><span class="punct">::</span><span class="constant">COMPLETE</span>
   <span class="keyword">end</span>
   
   <span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows enums to be nested in other modules or classes</span><span class="punct">&quot;</span> <span class="keyword">do</span>
@@ -130,7 +128,7 @@
 
 	<p>Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or <a href="http://elhumidor.blogspot.com/">contact me via my blog</a>.</p>
     <p class="coda">
-      <a href="http://elhumidor.blogspot.com/">John D. Hume</a>, 2nd November 2007<br>
+      <a href="http://elhumidor.blogspot.com/">John D. Hume</a>, 25th January 2008<br>
       Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
     </p>
 </div>
