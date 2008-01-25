@@ -1,3 +1,11 @@
+== 1.0.0 2008-01-25
+
+* New fancy syntax supporting extra member variables in enums
+
+== 0.1.0 ???
+
+* Add in a missing require
+
 == 0.0.3 2007-11-02
 
 * Support nesting enums inside other modules.
