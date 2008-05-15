@@ -96,3 +96,13 @@ describe "enum with no values array and values declared in the block" do
     HairColor::BLONDE.name.should == "BLONDE"
   end
 end
+
+# It was reported on my blog that <=> was causing segfaults.
+# I'd love to figure out why, but first I'd love to fix that. 
+describe "digging into this segfault/illegal instruction issue, renum" do
+  it "doesn't cause the ruby process to bomb!" do
+    Color::RED.should < Color::GREEN
+    Color::RED.should_not > Color::GREEN
+    Color::RED.should < Color::BLUE
+  end
+end

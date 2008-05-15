@@ -17,18 +17,16 @@ module Renum
     
     include Comparable
     attr_reader :name
+    attr_reader :index
     
     def initialize name
       @name = name.to_s
+      @index = self.class.values.size
       self.class.values << self
     end
     
     def to_s
       "#{self.class}::#{name}"
-    end
-    
-    def index
-      self.class.values.index self
     end
     
     def <=> other
