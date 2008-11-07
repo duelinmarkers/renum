@@ -74,6 +74,43 @@ Giving you something that satisfies this spec, plus a bit more:
   
 end</pre>
 
+h2. "Rails":http://www.rubyonrails.com/ Integration
+
+To use enumerated values as ActiveRecord attribute values, "use the constantize_attribute plugin":https://github.com/duelinmarkers/constantize_attribute/tree (also by me).
+
+<pre syntax="ruby">class Vehicle < ActiveRecord::Base
+  enum :Status do
+    New()
+    Used()
+    Salvage(true)
+    
+    def init(warn = false)
+      @warn = warn
+    end
+    
+    def requires_warning_buyer?
+      @warn
+    end
+  end
+  
+  constantize_attribute :status
+  
+end
+
+v = Vehicle.create! :status => Vehicle::Status::New
+# Now the database has the string "Vehicle::Status::New",
+# but your record object exposes the Status object:
+v.status.requires_warning_buyer?          # => false
+
+v.update_attribute :status, Vehicle::Status::Salvage
+# Now the database has the string "Vehicle::Status::Salvage".
+v.status.requires_warning_buyer?          # => true
+
+# Since constantize_attribute also accepts strings, it's easy
+# to use enumerated values with forms.
+v.status = "Vehicle::Status::Used"
+v.status.requires_warning_buyer?          # => false</pre>
+
 h2. License
 
 This code is free to use under the terms of the MIT license. 
@@ -81,4 +118,3 @@ This code is free to use under the terms of the MIT license.
 h2. Contact
 
 Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or "contact me via my blog":http://elhumidor.blogspot.com/.
-

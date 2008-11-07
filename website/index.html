@@ -33,7 +33,7 @@
     <h1>renum</h1>
     <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/renum"; return false'>
       <p>Get Version</p>
-      <a href="http://rubyforge.org/projects/renum" class="numbers">1.0.1</a>
+      <a href="http://rubyforge.org/projects/renum" class="numbers">1.0.2</a>
     </div>
     <p>Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby&#8217;s flexibility means there&#8217;s no such thing as type-safety.</p>
 
@@ -117,6 +117,46 @@
 <span class="keyword">end</span></pre></p>
 
 
+	<h2><a href="http://www.rubyonrails.com/">Rails</a> Integration</h2>
+
+
+	<p>To use enumerated values as ActiveRecord attribute values, <a href="https://github.com/duelinmarkers/constantize_attribute/tree">use the constantize_attribute plugin</a> (also by me).</p>
+
+
+	<p><pre class='syntax'><span class="keyword">class </span><span class="class">Vehicle</span> <span class="punct">&lt;</span> <span class="constant">ActiveRecord</span><span class="punct">::</span><span class="constant">Base</span>
+  <span class="ident">enum</span> <span class="symbol">:Status</span> <span class="keyword">do</span>
+    <span class="constant">New</span><span class="punct">()</span>
+    <span class="constant">Used</span><span class="punct">()</span>
+    <span class="constant">Salvage</span><span class="punct">(</span><span class="constant">true</span><span class="punct">)</span>
+    
+    <span class="keyword">def </span><span class="method">init</span><span class="punct">(</span><span class="ident">warn</span> <span class="punct">=</span> <span class="constant">false</span><span class="punct">)</span>
+      <span class="attribute">@warn</span> <span class="punct">=</span> <span class="ident">warn</span>
+    <span class="keyword">end</span>
+    
+    <span class="keyword">def </span><span class="method">requires_warning_buyer?</span>
+      <span class="attribute">@warn</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+  
+  <span class="ident">constantize_attribute</span> <span class="symbol">:status</span>
+  
+<span class="keyword">end</span>
+
+<span class="ident">v</span> <span class="punct">=</span> <span class="constant">Vehicle</span><span class="punct">.</span><span class="ident">create!</span> <span class="symbol">:status</span> <span class="punct">=&gt;</span> <span class="constant">Vehicle</span><span class="punct">::</span><span class="constant">Status</span><span class="punct">::</span><span class="constant">New</span>
+<span class="comment"># Now the database has the string &quot;Vehicle::Status::New&quot;,</span>
+<span class="comment"># but your record object exposes the Status object:</span>
+<span class="ident">v</span><span class="punct">.</span><span class="ident">status</span><span class="punct">.</span><span class="ident">requires_warning_buyer?</span>          <span class="comment"># =&gt; false</span>
+
+<span class="ident">v</span><span class="punct">.</span><span class="ident">update_attribute</span> <span class="symbol">:status</span><span class="punct">,</span> <span class="constant">Vehicle</span><span class="punct">::</span><span class="constant">Status</span><span class="punct">::</span><span class="constant">Salvage</span>
+<span class="comment"># Now the database has the string &quot;Vehicle::Status::Salvage&quot;.</span>
+<span class="ident">v</span><span class="punct">.</span><span class="ident">status</span><span class="punct">.</span><span class="ident">requires_warning_buyer?</span>          <span class="comment"># =&gt; true</span>
+
+<span class="comment"># Since constantize_attribute also accepts strings, it's easy</span>
+<span class="comment"># to use enumerated values with forms.</span>
+<span class="ident">v</span><span class="punct">.</span><span class="ident">status</span> <span class="punct">=</span> <span class="punct">&quot;</span><span class="string">Vehicle::Status::Used</span><span class="punct">&quot;</span>
+<span class="ident">v</span><span class="punct">.</span><span class="ident">status</span><span class="punct">.</span><span class="ident">requires_warning_buyer?</span>          <span class="comment"># =&gt; false</span></pre></p>
+
+
 	<h2>License</h2>
 
 
@@ -128,7 +168,7 @@
 
 	<p>Renum was created by John D. Hume. Comments are welcome. Send an email to duelin dot markers at gmail or <a href="http://elhumidor.blogspot.com/">contact me via my blog</a>.</p>
     <p class="coda">
-      <a href="http://elhumidor.blogspot.com/">John D. Hume</a>, 25th January 2008<br>
+      <a href="http://elhumidor.blogspot.com/">John D. Hume</a>, 7th November 2008<br>
       Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
     </p>
 </div>
