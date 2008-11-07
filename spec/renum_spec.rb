@@ -92,7 +92,7 @@ describe "enum with no values array and values declared in the block" do
     lambda { Size.ExtraLarge() }.should raise_error(NoMethodError)
   end
   
-  it "supprts there being no extra data and no init() method defined, if you don't need them" do
+  it "supports there being no extra data and no init() method defined, if you don't need them" do
     HairColor::BLONDE.name.should == "BLONDE"
   end
 end
