@@ -2,34 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
-module MyNamespace
-  enum :FooValue, %w( Bar Baz Bat )
-end
-
-enum :Color, [ :RED, :GREEN, :BLUE ] do
-  def abbr
-    name[0..0]
-  end
-end
-
-enum :Size do
-  Small("Really really tiny")
-  Medium("Sort of in the middle")
-  Large("Quite big")
-
-  attr_reader :description
-
-  def init description
-    @description = description
-  end
-end
-
-enum :HairColor do
-  BLONDE()
-  BRUNETTE()
-  RED()
-end
-
 describe "basic enum" do
   
   it "creates a class for the value type" do
@@ -67,9 +39,19 @@ describe "basic enum" do
   end
 end
 
+module MyNamespace
+  enum :FooValue, %w( Bar Baz Bat )
+end
+
 describe "nested enum" do
   it "is namespaced in the containing module or class" do
     MyNamespace::FooValue::Bar.class.should == MyNamespace::FooValue
+  end
+end
+
+enum :Color, [ :RED, :GREEN, :BLUE ] do
+  def abbr
+    name[0..0]
   end
 end
 
@@ -77,6 +59,24 @@ describe "enum with a block" do
   it "can define additional instance methods" do
     Color::RED.abbr.should == "R"
   end
+end
+
+enum :Size do
+  Small("Really really tiny")
+  Medium("Sort of in the middle")
+  Large("Quite big")
+
+  attr_reader :description
+
+  def init description
+    @description = description
+  end
+end
+
+enum :HairColor do
+  BLONDE()
+  BRUNETTE()
+  RED()
 end
 
 describe "enum with no values array and values declared in the block" do
@@ -94,16 +94,6 @@ describe "enum with no values array and values declared in the block" do
   
   it "supports there being no extra data and no init() method defined, if you don't need them" do
     HairColor::BLONDE.name.should == "BLONDE"
-  end
-end
-
-# It was reported on my blog that <=> was causing segfaults.
-# I'd love to figure out why, but first I'd love to fix that. 
-describe "digging into this segfault/illegal instruction issue, renum" do
-  it "doesn't cause the ruby process to bomb!" do
-    Color::RED.should < Color::GREEN
-    Color::RED.should_not > Color::GREEN
-    Color::RED.should < Color::BLUE
   end
 end
 
@@ -144,5 +134,13 @@ describe "an enum with instance-specific method definitions" do
   it "allows definition of a method on just one instance" do
     Rating::ThumbsUp.thumbs_up_only_method.should == "this method is only defined on ThumbsUp"
     lambda { Rating::NotRated.thumbs_up_only_method }.should raise_error(NoMethodError)
+  end
+end
+
+describe "<=> comparison issue that at one time was causing segfaults on MRI" do
+  it "doesn't cause the ruby process to bomb!" do
+    Color::RED.should < Color::GREEN
+    Color::RED.should_not > Color::GREEN
+    Color::RED.should < Color::BLUE
   end
 end
