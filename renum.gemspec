@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
     "README.textile"
   ]
   s.files = [
-    "License.txt",
      "README.textile",
      "Rakefile",
      "VERSION",
