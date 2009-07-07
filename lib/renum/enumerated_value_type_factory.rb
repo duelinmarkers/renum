@@ -18,9 +18,10 @@ module Renum
         setup_for_definition_in_block(klass) if values == :defined_in_block
         klass.class_eval &block if block_given?
         if values == :defined_in_block
-          klass.block_defined_values.each do |value_name, init_args|
+          klass.block_defined_values.each do |value_name, init_args, instance_block|
             value = klass.new(value_name)
             klass.const_set(value_name, value)
+            value.instance_eval &instance_block if instance_block
             value.init *init_args if init_args.any?
           end
           teardown_from_definition_in_block(klass)
@@ -37,8 +38,8 @@ module Renum
             @block_defined_values ||= []
           end
 
-          def self.method_missing value_name, *init_args
-            block_defined_values << [value_name, init_args]
+          def self.method_missing value_name, *init_args, &instance_block
+            block_defined_values << [value_name, init_args, instance_block]
           end
         end
       end

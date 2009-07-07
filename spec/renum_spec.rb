@@ -106,3 +106,43 @@ describe "digging into this segfault/illegal instruction issue, renum" do
     Color::RED.should < Color::BLUE
   end
 end
+
+enum :Rating do
+  NotRated()
+  
+  ThumbsDown do
+    def description
+      "real real bad"
+    end
+  end
+  
+  ThumbsUp do
+    def description
+      "so so good"
+    end
+    
+    def thumbs_up_only_method
+      "this method is only defined on ThumbsUp"
+    end
+  end
+  
+  def description
+    raise NotImplementedError
+  end
+end
+
+describe "an enum with instance-specific method definitions" do
+  it "allows each instance to have its own behavior" do
+    Rating::ThumbsDown.description.should == "real real bad"
+    Rating::ThumbsUp.description.should == "so so good"
+  end
+  
+  it "uses the implementation given at the top level if no alternate definition is given for an instance" do
+    lambda { Rating::NotRated.description }.should raise_error(NotImplementedError)
+  end
+  
+  it "allows definition of a method on just one instance" do
+    Rating::ThumbsUp.thumbs_up_only_method.should == "this method is only defined on ThumbsUp"
+    lambda { Rating::NotRated.thumbs_up_only_method }.should raise_error(NoMethodError)
+  end
+end
