@@ -65,11 +65,12 @@ enum :Size do
   Small("Really really tiny")
   Medium("Sort of in the middle")
   Large("Quite big")
+  Unknown()
 
   attr_reader :description
 
-  def init description
-    @description = description
+  def init description = nil
+    @description = description || "NO DESCRIPTION GIVEN"
   end
 end
 
@@ -80,12 +81,12 @@ enum :HairColor do
 end
 
 describe "enum with no values array and values declared in the block" do
-  it "provides an alternative means of declaring values where extra information can be provided for initialization" do
+  it "provides another way to declare values where an init method can take extra params" do
     Size::Small.description.should == "Really really tiny"
   end
   
   it "works the same as the basic form with respect to ordering" do
-    Size.values.should == [Size::Small, Size::Medium, Size::Large]
+    Size.values.should == [Size::Small, Size::Medium, Size::Large, Size::Unknown]
   end
   
   it "responds as expected to arbitrary method calls, in spite of using method_missing for value definition" do
@@ -94,6 +95,10 @@ describe "enum with no values array and values declared in the block" do
   
   it "supports there being no extra data and no init() method defined, if you don't need them" do
     HairColor::BLONDE.name.should == "BLONDE"
+  end
+  
+  it "calls the init method even if no arguments are provided" do
+    Size::Unknown.description.should == "NO DESCRIPTION GIVEN"
   end
 end
 

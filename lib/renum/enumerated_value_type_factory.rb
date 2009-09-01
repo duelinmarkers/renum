@@ -22,7 +22,7 @@ module Renum
             value = klass.new(value_name)
             klass.const_set(value_name, value)
             value.instance_eval &instance_block if instance_block
-            value.init *init_args if init_args.any?
+            value.init *init_args if value.respond_to? :init
           end
           teardown_from_definition_in_block(klass)
         else
