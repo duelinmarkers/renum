@@ -16,6 +16,7 @@ begin
     s.description = "provides a readable but terse enum facility for Ruby"
     s.authors = ["John Hume"]
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler or a dependency not available. To install: sudo gem install jeweler"
 end
