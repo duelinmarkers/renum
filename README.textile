@@ -2,11 +2,7 @@ h1. renum
 
 Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby's flexibility means there's no such thing as type-safety.
 
-h2. Installing
-
-<pre syntax="ruby">sudo gem install renum</pre>
-
-h2. Demonstration of usage
+h2. Usage
 
 Renum allows you to do things like this:
 
