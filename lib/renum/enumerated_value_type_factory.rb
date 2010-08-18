@@ -30,6 +30,7 @@ module Renum
             klass.const_set(name, klass.new(name))
           end
         end
+        klass.values.freeze
       end
     
       def setup_for_definition_in_block klass

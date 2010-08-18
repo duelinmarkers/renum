@@ -30,6 +30,12 @@ describe "basic enum" do
     Color::GREEN.index.should == 1
   end
   
+  it "provides name lookup on values" do
+    Status.with_name('IN_PROGRESS').should == Status::IN_PROGRESS
+    Color.with_name('GREEN').should == Color::GREEN
+    Color.with_name('IN_PROGRESS').should be_nil
+  end
+
   it "provides a reasonable to_s for values" do
     Status::NOT_STARTED.to_s.should == "Status::NOT_STARTED"
   end
@@ -147,5 +153,19 @@ describe "<=> comparison issue that at one time was causing segfaults on MRI" do
     Color::RED.should < Color::GREEN
     Color::RED.should_not > Color::GREEN
     Color::RED.should < Color::BLUE
+  end
+end
+
+describe "prevention of subtle and annoying bugs" do
+  it "prevents you modifying the values array" do
+    lambda { Color.values << 'some crazy value' }.should raise_error(TypeError, /can't modify frozen/)
+  end
+
+  it "prevents you modifying the name hash" do
+    lambda { Color.values_by_name['MAGENTA'] = 'some crazy value' }.should raise_error(TypeError, /can't modify frozen/)
+  end
+
+  it "prevents you modifying the name of a value" do
+    lambda { Color::RED.name << 'dish-Brown' }.should raise_error(TypeError, /can't modify frozen/)
   end
 end
