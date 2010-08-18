@@ -1,4 +1,3 @@
-$:.unshift File.dirname(__FILE__)
 require 'renum/enumerated_value_type_factory'
 
 # Requiring 'renum' mixes the Renum module into both the main Object and 
