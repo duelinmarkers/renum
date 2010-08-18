@@ -17,5 +17,5 @@ begin
     s.authors = ["John Hume"]
   end
 rescue LoadError
-  puts "Jeweler or a dependency not available. To install: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler or a dependency not available. To install: sudo gem install jeweler"
 end

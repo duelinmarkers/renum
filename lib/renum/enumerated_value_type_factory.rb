@@ -7,13 +7,13 @@ module Renum
         klass = create_class nest, type_name
         create_values klass, values, &block
       end
-    
+
       def create_class nest, type_name
         klass = Class.new EnumeratedValue
         nest.const_set(type_name, klass)
         klass
       end
-    
+
       def create_values klass, values, &block
         setup_for_definition_in_block(klass) if values == :defined_in_block
         klass.class_eval &block if block_given?
@@ -32,7 +32,7 @@ module Renum
         end
         klass.values.freeze
       end
-    
+
       def setup_for_definition_in_block klass
         klass.class_eval do
           def self.block_defined_values
@@ -44,7 +44,7 @@ module Renum
           end
         end
       end
-    
+
       def teardown_from_definition_in_block klass
         class << klass
           remove_method :block_defined_values
