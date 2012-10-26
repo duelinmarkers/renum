@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
@@ -158,14 +158,14 @@ end
 
 describe "prevention of subtle and annoying bugs" do
   it "prevents you modifying the values array" do
-    lambda { Color.values << 'some crazy value' }.should raise_error(TypeError, /can't modify frozen/)
+    expect { Color.values << 'some crazy value' }.to raise_error(/can't modify frozen/)
   end
 
   it "prevents you modifying the name hash" do
-    lambda { Color.values_by_name['MAGENTA'] = 'some crazy value' }.should raise_error(TypeError, /can't modify frozen/)
+    expect { Color.values_by_name['MAGENTA'] = 'some crazy value' }.to raise_error(/can't modify frozen/)
   end
 
   it "prevents you modifying the name of a value" do
-    lambda { Color::RED.name << 'dish-Brown' }.should raise_error(TypeError, /can't modify frozen/)
+    expect { Color::RED.name << 'dish-Brown' }.to raise_error(/can't modify frozen/)
   end
 end

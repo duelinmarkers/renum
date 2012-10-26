@@ -1,22 +1,17 @@
 require 'rubygems'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
-Spec::Rake::SpecTask.new do |t|
-end
+RSpec::Core::RakeTask.new
 
 task :default => :spec
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |s|
-    s.name = "renum"
-    s.summary = "provides a readable but terse enum facility for Ruby"
-    s.email = "duelin.markers@gmail.com"
-    s.homepage = "http://github.com/duelinmarkers/renum"
-    s.description = "provides a readable but terse enum facility for Ruby"
-    s.authors = ["John Hume"]
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler or a dependency not available. To install: sudo gem install jeweler"
+require 'jeweler'
+Jeweler::Tasks.new do |s|
+  s.name = "renum"
+  s.summary = "provides a readable but terse enum facility for Ruby"
+  s.email = "duelin.markers@gmail.com"
+  s.homepage = "http://github.com/duelinmarkers/renum"
+  s.description = "provides a readable but terse enum facility for Ruby"
+  s.authors = ["John Hume"]
 end
+Jeweler::RubygemsDotOrgTasks.new
