@@ -1,5 +1,7 @@
 h1. renum
 
+!https://secure.travis-ci.org/duelinmarkers/renum.png(Build Status)!:http://travis-ci.org/duelinmarkers/renum
+
 Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby's flexibility means there's no such thing as type-safety.
 
 h2. Usage
