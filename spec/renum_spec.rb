@@ -158,14 +158,14 @@ end
 
 describe "prevention of subtle and annoying bugs" do
   it "prevents you modifying the values array" do
-    expect { Color.values << 'some crazy value' }.to raise_error(/can't modify frozen/)
+    expect { Color.values << 'some crazy value' }.to raise_error(/modify frozen/)
   end
 
   it "prevents you modifying the name hash" do
-    expect { Color.values_by_name['MAGENTA'] = 'some crazy value' }.to raise_error(/can't modify frozen/)
+    expect { Color.values_by_name['MAGENTA'] = 'some crazy value' }.to raise_error(/modify frozen/)
   end
 
   it "prevents you modifying the name of a value" do
-    expect { Color::RED.name << 'dish-Brown' }.to raise_error(/can't modify frozen/)
+    expect { Color::RED.name << 'dish-Brown' }.to raise_error(/modify frozen/)
   end
 end
