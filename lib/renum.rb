@@ -5,9 +5,13 @@ require 'renum/enumerated_value_type_factory'
 # define an enumeration with an implicit receiver.
 module Renum
 
-  # Figures out whether the new enumeration will live in Object or the 
-  # receiving Module, then delegates to EnumeratedValueTypeFactory#create for 
-  # all the real work.
+  # Declares an enumerated type. If called inside a module, the enumerated type class will
+  # be nested inside that module.
+  #
+  # @param [Symbol] type_name The name of the EnumeratedType class to create
+  # @param [optional, Array<Symbol, String>] values
+  #   the names of the values in order, can be omitted if you'll specify them via method calls in a block
+  # @param block can be used to specify values with method calls, instance methods
   def enum type_name, values = :defined_in_block, &block
     nest = self.is_a?(Module) ? self : Object
     EnumeratedValueTypeFactory.create(nest, type_name, values, &block)
