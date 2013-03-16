@@ -179,4 +179,13 @@ describe "serialization (for ActiveRecord or what-have-you)" do
     serializer.dump(nil).should == nil
     serializer.load(nil).should == nil
   end
+
+  it "can serialize to and deserialize from its positional index" do
+    serializer = Renum::IndexSerializer.new Color
+    serializer.dump(Color::RED).should == 0
+    serializer.load(0).should == Color::RED
+
+    serializer.dump(nil).should == nil
+    serializer.load(nil).should == nil
+  end
 end
