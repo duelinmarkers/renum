@@ -29,15 +29,15 @@ end</pre>
 Giving you something that satisfies this spec, plus a bit more:
 
 <pre syntax="ruby">describe "enum" do
-  
+
   it "creates a class for the value type" do
     Status.class.should == Class
   end
-  
+
   it "makes each value an instance of the value type" do
     Status::NOT_STARTED.class.should == Status
   end
-  
+
   it "exposes array of values" do
     Status.values.should == [Status::NOT_STARTED, Status::IN_PROGRESS, Status::COMPLETE]
   end
@@ -45,54 +45,90 @@ Giving you something that satisfies this spec, plus a bit more:
   it "provides an alternative means of declaring values where extra information can be provided for initialization" do
     Size::Small.description.should == "Really really tiny"
   end
-  
+
   it "enumerates over values" do
     Status.map {|s| s.name}.should == %w[NOT_STARTED IN_PROGRESS COMPLETE]
   end
-  
+
   it "indexes values" do
     Status[2].should == Status::COMPLETE
   end
-  
+
   it "provides index lookup on values" do
     Status::IN_PROGRESS.index.should == 1
   end
-  
+
   it "provides a reasonable to_s for values" do
     Status::NOT_STARTED.to_s.should == "Status::NOT_STARTED"
   end
-  
+
   it "makes values comparable" do
     Status::NOT_STARTED.should < Status::COMPLETE
   end
-  
+
   it "allows enums to be nested in other modules or classes" do
     MyNamespace::FooValue::Bar.class.should == MyNamespace::FooValue
   end
-  
+
 end</pre>
 
 h2. "Rails":http://www.rubyonrails.com/ Integration
 
-To use enumerated values as ActiveRecord attribute values, "use the constantize_attribute plugin":https://github.com/duelinmarkers/constantize_attribute/tree (also by me).
+[This feature is brand new and should be considered beta-quality.]
+
+Use Renum::NameSerializer with ActiveRecord's "`serialize`":http://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Serialization/ClassMethods.html#method-i-serialize method to store enum values as strings.
 
 <pre syntax="ruby">class Vehicle < ActiveRecord::Base
   enum :Status do
     New()
     Used()
     Salvage(true)
-    
+
     def init(warn = false)
       @warn = warn
     end
-    
+
     def requires_warning_buyer?
       @warn
     end
   end
-  
+
+  serialize :status, Renum::NameSerializer.new(Status)
+
+end
+
+v = Vehicle.create! :status => Vehicle::Status::New
+# Now the database has the string "New",
+# but your record object exposes the Status object:
+v.status.requires_warning_buyer?          # => false
+
+v.update_attribute :status, Vehicle::Status::Salvage
+# Now the database has the string "Salvage".
+v.status.requires_warning_buyer?          # => true
+
+# Note that if you assign a String, the value will remain a String until you save.
+v.status = "Used"
+v.status.requires_warning_buyer?          # => raises NoMethodError</pre>
+
+Before ActiveRecord had such flexible serialization support, I wrote a Rails plugin called "constantize_attribute":https://github.com/duelinmarkers/constantize_attribute/tree that would store the fully qualified name of your value in a string column. It hasn't been tested against a recent version of Rails, but it should still work. It's not packaged as a gem, so if you want to use it, I'd recommend you just grab the code. (It's quite tiny.)
+
+<pre syntax="ruby">class Vehicle < ActiveRecord::Base
+  enum :Status do
+    New()
+    Used()
+    Salvage(true)
+
+    def init(warn = false)
+      @warn = warn
+    end
+
+    def requires_warning_buyer?
+      @warn
+    end
+  end
+
   constantize_attribute :status
-  
+
 end
 
 v = Vehicle.create! :status => Vehicle::Status::New
@@ -111,7 +147,7 @@ v.status.requires_warning_buyer?          # => false</pre>
 
 h2. License
 
-This code is free to use under the terms of the MIT license. 
+This code is free to use under the terms of the MIT license.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
