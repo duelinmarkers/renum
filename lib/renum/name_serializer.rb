@@ -5,7 +5,11 @@ module Renum
     end
 
     def dump v
-      v && v.name
+      v && if v.is_a?(String)
+             v
+           else
+             v.name
+           end
     end
 
     def load s

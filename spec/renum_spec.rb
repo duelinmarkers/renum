@@ -174,6 +174,7 @@ describe "serialization (for ActiveRecord or what-have-you)" do
   it "can serialize to and deserialize from its name string" do
     serializer = Renum::NameSerializer.new Color
     serializer.dump(Color::RED).should == "RED"
+    serializer.dump("RED").should == "RED" # for convenient param assignment
     serializer.load("RED").should == Color::RED
 
     serializer.dump(nil).should == nil
