@@ -1,7 +1,8 @@
 require 'renum/enumerated_value_type_factory'
+require 'renum/name_serializer'
 
-# Requiring 'renum' mixes the Renum module into both the main Object and 
-# Module, so it can be called from anywhere that you might reasonably 
+# Requiring 'renum' mixes the Renum module into both the main Object and
+# Module, so it can be called from anywhere that you might reasonably
 # define an enumeration with an implicit receiver.
 module Renum
 

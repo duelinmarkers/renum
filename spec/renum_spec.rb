@@ -169,3 +169,14 @@ describe "prevention of subtle and annoying bugs" do
     expect { Color::RED.name << 'dish-Brown' }.to raise_error(/modify frozen/)
   end
 end
+
+describe "serialization (for ActiveRecord or what-have-you)" do
+  it "can serialize to and deserialize from its name string" do
+    serializer = Renum::NameSerializer.new Color
+    serializer.dump(Color::RED).should == "RED"
+    serializer.load("RED").should == Color::RED
+
+    serializer.dump(nil).should == nil
+    serializer.load(nil).should == nil
+  end
+end
