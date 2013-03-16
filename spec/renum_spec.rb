@@ -43,6 +43,10 @@ describe "basic enum" do
   it "makes values comparable" do
     Color::RED.should < Color::GREEN
   end
+
+  it "doesn't let Comparable's == confuse things" do
+    Color[0].should_not == Status[0]
+  end
 end
 
 module MyNamespace

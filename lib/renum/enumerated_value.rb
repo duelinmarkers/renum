@@ -50,7 +50,7 @@ module Renum
     end
 
     # Returns the fully qualified name of the constant referring to this value.
-    # Don't override this if you're using Renum with the constantize_attribute 
+    # Don't override this if you're using Renum with the constantize_attribute
     # plugin, which relies on this behavior.
     def to_s
       "#{self.class}::#{name}"
@@ -61,5 +61,8 @@ module Renum
       index <=> other.index
     end
 
+    def == other
+      equal? other
+    end
   end
 end
