@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rake', :group => [:development, :test]
-gem 'rspec', :group => [:development, :test]
-gem 'jeweler', :group => [:development, :test]
+group :development, :test do
+  gem 'rake'
+  gem 'rspec'
+  gem 'jeweler'
+end
+
+group :test do
+  gem 'simplecov', require: false
+end
