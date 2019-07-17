@@ -1,6 +1,7 @@
 require 'renum/enumerated_value'
 
 module Renum
+  # :nodoc:
   module EnumeratedValueTypeFactory
     class << self
       def create nest, type_name, values, &block
