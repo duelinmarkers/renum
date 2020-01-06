@@ -30,6 +30,11 @@ describe "basic enum" do
     Color::GREEN.index.should == 1
   end
 
+  it "provides an integer conversion based on the index" do
+    Status::IN_PROGRESS.to_i.should == 1
+    Color::GREEN.to_i.should == 1
+  end
+
   it "provides name lookup on values" do
     Status.with_name('IN_PROGRESS').should == Status::IN_PROGRESS
     Color.with_name('GREEN').should == Color::GREEN

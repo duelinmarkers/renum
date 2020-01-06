@@ -40,6 +40,8 @@ module Renum
 
     attr_reader :name, :index
 
+    alias to_i index
+
     # You should never directly new-up an EnumeratedValue, so this is basically internal.
     # It sets up the value with its class, so if you override, be sure to call super!
     # Better yet define init as shown in the README.
